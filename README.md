@@ -1,2 +1,2 @@
-# prev
-Weather forecast using command line (bash)
+# weather
+Today's city conditions using command line (bash)
