@@ -1,6 +1,6 @@
 #!/bin/bash
 # Remember to insert the appid parameter obtened on openweathermap.org
-appid=
+appid=35222ccfcb5285d12e8a0e3222d59d9c
 clear
 echo "Insert weather location >>"
 read paese
@@ -28,7 +28,8 @@ c1=`cat w1.xml | tr '<' '\n' | grep "clouds value" | head -1 | cut -d'"' -f4`
 # echo "--------------"
 
 #pr2=`cat w2.xml | grep precipitation | head -1 | cut -d'"' -f2`
-deg=`cat w2.xml | grep wind | head -1 | cut -d'"' -f6`
+#deg=`cat w2.xml | grep wind | head -1 | tr ' ' '\n' | cut -d'"' -f6`
+deg=`cat w2.xml | grep wind | head -1 | tr ' ' '\n' | grep direction | cut -d'"' -f2`
 
 if ([ $(echo "$deg > 337.5" | bc -l) = "1" ] || [ $(echo "$deg <= 22.5" | bc -l) = "1" ]); then dir2="N"; fi
 if ([ $(echo "$deg > 22.5" | bc -l) = "1" ] && [ $(echo "$deg <= 67.5" | bc -l) = "1" ]); then dir2="NE"; fi
@@ -39,20 +40,22 @@ if ([ $(echo "$deg > 202.5" | bc -l) = "1" ] && [ $(echo "$deg <= 247.5" | bc -l
 if ([ $(echo "$deg > 247.5" | bc -l) = "1" ] && [ $(echo "$deg <= 292.5" | bc -l) = "1" ]); then dir2="W"; fi
 if ([ $(echo "$deg > 292.5" | bc -l) = "1" ] && [ $(echo "$deg <= 337.5" | bc -l) = "1" ]); then dir2="NW"; fi
 
-s2=`cat w2.xml | grep speed | tail -1 | cut -d'"' -f8`
+#s2=`cat w2.xml | grep speed | tail -1 | cut -d'"' -f8`
+s2=`cat w2.xml | grep wind | head -1 | tr ' ' '\n' | grep speed | tail -1 | cut -d'"' -f2`
 s2=$s2/1.609
 t21=`cat w2.xml | grep Low | head -1 | cut -d':' -f3 | cut -d'<' -f1`
 t22=`cat w2.xml | grep High | head -1 | cut -d':' -f2 | cut -d'L' -f1`
 t21=($t21-32)/1.8
 t22=($t22-32)/1.8
-p2=`cat w2.xml | grep atmosphere | head -1 | cut -d'"' -f6`
+#p2=`cat w2.xml | grep atmosphere | head -1 | cut -d'"' -f6`
+p2=`cat w2.xml | grep atmosphere | head -1 | tr ' ' '\n' | grep pressure | tail -1 | cut -d'"' -f2`
 h2=`cat w2.xml | grep atmosphere | head -1 | cut -d'"' -f4`
 c2=`cat w2.xml | grep BR | head -1 | cut -d',' -f1`
 # echo -e `echo "scale=2; $pr1" | bc -l` 'mm'
 
 # echo -e $dir2 # '\t' `echo "scale=2; $s" | bc -l` 'kph'
 # echo -e `echo "scale=2; $t21" | bc -l` "°C" '\t' `echo "scale=2; $t22" | bc -l` "°C"
-p2=$p2*33.8
+#p2=$p2*33.8
 # echo -e `echo $p2 | bc -l` "hPa"
 # echo -e $h2 "%"
 # echo -e $c2
